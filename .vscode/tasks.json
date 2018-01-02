@@ -23,6 +23,8 @@
 
                 "Code/Editor/Importers/TextureImporter.cpp",
                 "Code/Engine/Common/File.cpp",
+                "Code/Engine/Resources/Resource.cpp",
+                "Code/Engine/Resources/DynamicResource.cpp",
                 "Code/Engine/Window/Window.cpp",
                 "Code/Engine/Window/WindowApi.cpp",
                 "Code/Engine/Window/WindowCallbacks.cpp",

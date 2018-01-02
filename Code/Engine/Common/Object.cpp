@@ -7,10 +7,6 @@ namespace cp
     {
     }
 
-    Object::~Object()
-    {
-    }
-
     void Object::set_flag(const Flag& flag)
     {
         m_flag = flag;
