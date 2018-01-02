@@ -1,0 +1,45 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "project build",
+            "type": "shell",
+            "command": "/usr/bin/clang++-5.0",
+            "args": [
+                "-g",
+                "-std=c++1z",
+                "-fno-exceptions",
+                "-Wall",
+                "-Werror",
+                "-Wfatal-errors",
+            
+                "Code/Main.cpp",
+                "Code/Shader.cpp",
+                "Code/Camera.cpp",
+                "Code/stb_image.cpp",
+
+                "Code/Engine/Window/Window.cpp",
+                "Code/Engine/Window/WindowApi.cpp",
+                "Code/Engine/Window/WindowCallbacks.cpp",
+
+                "Code/Engine/Renderer/RendererApi.cpp",
+
+                "-I Code",
+                "-I /usr/include",
+                "-L /usr/lib/x86_64-linux-gnu",
+
+                "-l GL",
+                "-l GLEW",
+                "-l glfw",
+
+                "-o Build/Demo"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
