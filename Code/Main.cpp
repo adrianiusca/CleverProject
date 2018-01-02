@@ -1,10 +1,12 @@
 #include "stb_image.h"
 
-#include "Shader.hpp"
 #include "Camera.hpp"
 
 #include "Engine/Window/WindowApi.hpp"
 #include "Engine/Window/Window.hpp"
+
+#include "Engine/Resources/Shaders/Shader.hpp"
+#include "Engine/Resources/Shaders/Program.hpp"
 
 #include "Engine/Renderer/RendererApi.hpp"
 #include "Engine/Common/File.hpp"
@@ -17,8 +19,10 @@ const unsigned int SCR_HEIGHT = 600;
 
 // camera
 Camera camera(glm::vec3(0.0f, 2.0f, 5.0f));
+
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
+
 bool firstMouse = true;
 
 // timing
@@ -212,7 +216,12 @@ int main()
         1, 2, 3
     };  
 
-    Shader shader("Assets/BasicShader.vs", "Assets/BasicShader.fs");
+    shared_ptr<cp::Shader> vertex_shader = make_shared<cp::Shader>(1, make_shared<cp::File>(path("Assets/BasicShader.vs")), GL_VERTEX_SHADER);
+    shared_ptr<cp::Shader> fragment_shader = make_shared<cp::Shader>(2, make_shared<cp::File>(path("Assets/BasicShader.fs")), GL_FRAGMENT_SHADER);
+
+    shared_ptr<cp::Program> program = make_shared<cp::Program>(3);
+    program->add_shaders({ vertex_shader, fragment_shader });
+    program->load();
 
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
@@ -302,6 +311,13 @@ int main()
     int fps;
     float t = 0;
 
+    program->add_uniform(cp::ShaderUniforms::VIEW_MATRIX, "view");
+    program->add_uniform(cp::ShaderUniforms::MODEL_MATRIX, "model");
+    program->add_uniform(cp::ShaderUniforms::PROJECTION_MATRIX, "projection");
+
+    program->add_uniform(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_1, "texture1");
+    program->add_uniform(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_2, "texture2");
+
     while (!window.is_closing())
     {
         // per-frame time logic
@@ -327,7 +343,7 @@ int main()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        shader.use();
+        program->use();
 
         // transformation
         glm::mat4 view(1.0f);
@@ -336,14 +352,11 @@ int main()
         view = camera.GetViewMatrix();
         projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
 
-        unsigned int viewLoc = glGetUniformLocation(shader.ID, "view");
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));    
+        program->set_mat4(cp::ShaderUniforms::VIEW_MATRIX, view);
+        program->set_mat4(cp::ShaderUniforms::PROJECTION_MATRIX, projection);    
 
-        unsigned int projLoc = glGetUniformLocation(shader.ID, "projection");
-        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));    
-
-        shader.setInt("texture1", 0);
-        shader.setInt("texture2", 1);
+        program->set_int(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_1, 0);
+        program->set_int(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_2, 1);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
@@ -358,12 +371,7 @@ int main()
             glm::mat4 model;
             model = glm::translate(model, cubePositions[i]);
             
-            // rotations
-            //float angle = 20.0f * (i + 1);
-            //model = glm::rotate(model, glm::radians(angle) * (float)glfwGetTime(), glm::vec3(1.0f, 0.3f, 0.5f));
-            
-            unsigned int transformLoc = glGetUniformLocation(shader.ID, "model");
-            glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
+            program->set_mat4(cp::ShaderUniforms::MODEL_MATRIX, model);
 
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }

@@ -1,9 +1,13 @@
 #pragma once
 
 // standard libraries
+#include <map>
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <functional>
+#include <algorithm>
+#include <memory>
 #include <experimental/filesystem>
 
 // graphic libraries

@@ -2,7 +2,7 @@
 
 namespace cp
 {
-    Shader::Shader(i32 id, const std::shared_ptr<File>& file, i32 type)
+    Shader::Shader(i32 id, const shared_ptr<File>& file, i32 type)
         : DynamicResource(id, ResourceTypes::SHADER, file)
         , m_shader_id(0)
         , m_shader_type(type)

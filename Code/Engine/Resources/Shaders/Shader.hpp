@@ -1,13 +1,13 @@
 #pragma once
 
-#include "DynamicResource.hpp"
+#include "Engine/Resources/DynamicResource.hpp"
 
 namespace cp
 {
     class Shader : public DynamicResource
     {
     public:
-        Shader(i32 id, const std::shared_ptr<File>& file, i32 type);
+        Shader(i32 id, const shared_ptr<File>& file, i32 type);
 
         i32 get_shader_type() const;
         i32 get_shader_id() const;

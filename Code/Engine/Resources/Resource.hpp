@@ -13,10 +13,12 @@ namespace cp
         virtual bool parse();
 
         void set_file(const shared_ptr<File>& file);
+        
         shared_ptr<File> get_file() const;
+        ResourceTypes get_type() const;
     
     protected:
-        explicit Resource(int id, ResourceTypes type, shared_ptr<File> file = nullptr);
+        explicit Resource(i32 id, ResourceTypes type, shared_ptr<File> file = nullptr);
 
         virtual ~Resource() = default;
     

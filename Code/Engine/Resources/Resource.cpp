@@ -32,4 +32,9 @@ namespace cp
     {
         return m_file;
     }
+
+    ResourceTypes Resource::get_type() const
+    {
+        return m_type;
+    }
 }

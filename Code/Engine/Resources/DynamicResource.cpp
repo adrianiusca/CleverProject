@@ -2,8 +2,10 @@
 
 namespace cp
 {
-    DynamicResource::DynamicResource(int id, ResourceTypes type, shared_ptr<File> file = nullptr)
+    DynamicResource::DynamicResource(int id, ResourceTypes type, shared_ptr<File> file)
         : Resource(id, type, file)
+        , m_is_loaded(false)
+        , m_counter(0)
     {
     }
 
@@ -13,7 +15,7 @@ namespace cp
         {
             if (!create())
             {
-                cout << "could not create the resource" << m_id << endl;
+                cout << "could not create the resource " << m_id << endl;
 
                 return false;
             }
