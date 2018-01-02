@@ -32,6 +32,9 @@ namespace cp
         GLFWmonitor* get_monitor();
         
     private:
+        Window(const Window &) = delete;
+        Window &operator=(const Window &) = delete;
+
         void init_callbacks() const;
 
         void process_events() const;

@@ -3,6 +3,8 @@
 // standard libraries
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <experimental/filesystem>
 
 // graphic libraries
 #include <GL/glew.h>
@@ -16,3 +18,5 @@
 
 using namespace std;
 using namespace glm;
+
+using namespace std::experimental;

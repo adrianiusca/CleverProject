@@ -10,6 +10,7 @@
             "args": [
                 "-g",
                 "-std=c++1z",
+
                 "-fno-exceptions",
                 "-Wall",
                 "-Werror",
@@ -20,10 +21,11 @@
                 "Code/Camera.cpp",
                 "Code/stb_image.cpp",
 
+                "Code/Editor/TextureImporter.cpp",
+                "Code/Engine/Common/File.cpp",
                 "Code/Engine/Window/Window.cpp",
                 "Code/Engine/Window/WindowApi.cpp",
                 "Code/Engine/Window/WindowCallbacks.cpp",
-
                 "Code/Engine/Renderer/RendererApi.cpp",
 
                 "-I Code",
@@ -33,6 +35,7 @@
                 "-l GL",
                 "-l GLEW",
                 "-l glfw",
+                "-l stdc++fs",
 
                 "-o Build/Demo"
             ],
