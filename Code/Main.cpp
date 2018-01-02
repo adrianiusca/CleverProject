@@ -7,6 +7,9 @@
 #include "Engine/Window/Window.hpp"
 
 #include "Engine/Renderer/RendererApi.hpp"
+#include "Engine/Common/File.hpp"
+
+#include "Editor/Importers/TextureImporter.hpp"
 
 // settings
 const unsigned int SCR_WIDTH  = 800;
@@ -111,6 +114,9 @@ int main()
     cout << "[GLM] api version: " << GLM_VERSION_MAJOR << "." 
                                   << GLM_VERSION_MINOR << "." 
                                   << GLM_VERSION_PATCH << endl;
+
+    cout << "[FREE_IMAGE] api version: " << FREEIMAGE_MAJOR_VERSION << "."
+                                         << FREEIMAGE_MINOR_VERSION << endl;
 
     if (!cp::WindowApi::init())
     {
@@ -230,6 +236,11 @@ int main()
 
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+
+    // textures
+    cp::TextureImporter importer(cp::File(path("Assets/container.jpg")));
+
+    importer.load();
 
     unsigned int texture1;
     glGenTextures(1, &texture1); 

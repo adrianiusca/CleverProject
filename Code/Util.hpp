@@ -16,7 +16,10 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/random.hpp>
 
+// importers
+#include <FreeImage.h>
+
 using namespace std;
 using namespace glm;
 
-using namespace std::experimental;
+using namespace std::experimental::filesystem;

@@ -2,23 +2,27 @@
 
 namespace cp
 {
-    File::File(const filesystem::path& path)
+    File::File(const path& path)
         : m_path(path)
         , m_ptr(nullptr)
     {
     }
 
-    bool File::open()
+    bool File::open(const string& mode)
     {
         if (m_path.empty())
         {
+            cout << "file path is empty" << endl;
+
             return false;
         }
 
-        m_ptr = fopen(m_path.c_str(), "rb");
+        m_ptr = fopen(m_path.c_str(), mode.c_str());
 
         if (!m_ptr)
         {
+            cout << "file pointer is null" << endl;
+
             return false;
         }
 
@@ -35,19 +39,29 @@ namespace cp
         m_ptr = nullptr;
     }
 
-    void File::set_path(const filesystem::path& path)
+    void File::set_path(const path& path)
     {
         m_path = path;
     }
 
-    const filesystem::path& File::get_path() const
+    void File::set_extension(const string& extension)
+    {
+        m_path.replace_extension(extension);
+    }
+
+    const path& File::get_path() const
     {
         return m_path;
     }
         
-    filesystem::path File::get_extension() const
+    string File::get_extension() const
     {
         return m_path.extension();
+    }
+
+    path File::get_filename() const
+    {
+        return m_path.filename();
     }
 
     string File::get_data() const

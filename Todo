@@ -3,7 +3,4 @@ Lighting - Colors
 - o clasa WindowCallbacks 
     - in care avem functiile statice de la fereastra
 
-- clasa Window nu are copy constructor sau operator de asignare
-    - poate nici operator default
-
 - o clasa pentru consola in care afisam mesaje
