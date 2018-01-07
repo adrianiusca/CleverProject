@@ -8,6 +8,7 @@
 #include <functional>
 #include <algorithm>
 #include <memory>
+#include <chrono>
 #include <experimental/filesystem>
 
 // graphic libraries
@@ -26,4 +27,5 @@
 using namespace std;
 using namespace glm;
 
+using namespace std::chrono;
 using namespace std::experimental::filesystem;

@@ -7,27 +7,27 @@ namespace cp
     {
         if (glfwInit() != GLFW_TRUE)
         {
-            std::cout << "[GLFW] api failed" << std::endl;
+            cout << "[GLFW] api failed" << endl;
 
             return false;
         }
 
-        std::cout << "[GLFW] api succeed" << std::endl;
+        cout << "[GLFW] api succeed" << endl;
 
         ivec3 version;
 
         glfwGetVersion(&version.x, &version.y, &version.z);
 
-        std::cout << "[GLFW] api version: " << version.x << "." 
+        cout << "[GLFW] api version: " << version.x << "." 
                                             << version.y << " revision " 
-                                            << version.z << std::endl;
+                                            << version.z << endl;
 
         return true;
     }
 
     void WindowApi::release()
     {
-        std::cout << "[GLFW] api released" << std::endl;
+        cout << "[GLFW] api released" << endl;
 
         glfwTerminate();
     }
@@ -39,7 +39,7 @@ namespace cp
 
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-        std::cout << "[GLFW] opengl core profile (version >= 3.2)" << std::endl;
+        cout << "[GLFW] opengl core profile (version >= 3.2)" << endl;
     }
 
     void WindowApi::enable_fixed_size()

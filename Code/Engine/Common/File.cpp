@@ -66,7 +66,7 @@ namespace cp
 
     string File::get_data() const
     {
-        std::string data;
+        string data;
 
         if (m_ptr)
         {
@@ -77,11 +77,11 @@ namespace cp
 
         if (!m_path.empty())
         {
-            std::ifstream read(m_path.c_str(), std::ifstream::in);
+            ifstream read(m_path.c_str(), ifstream::in);
 
             if (read.is_open())
             {
-                std::stringstream stream;
+                stringstream stream;
                 stream << read.rdbuf();
 
                 data = stream.str();

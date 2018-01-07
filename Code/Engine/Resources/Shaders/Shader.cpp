@@ -43,7 +43,7 @@ namespace cp
             return false;
         }
 
-        const std::string& source = m_file->get_data();
+        const string& source = m_file->get_data();
         const char* code = source.c_str();
 
         glShaderSource(m_shader_id, 1, &code, nullptr);
@@ -81,7 +81,7 @@ namespace cp
 
             if (length)
             {
-                std::vector<char> error(length);
+                vector<char> error(length);
                 glGetShaderInfoLog(m_shader_id, length, nullptr, &error.front());
 
                 cout << "shader " << m_file->get_filename() << " has a problem:" << endl;

@@ -1,8 +1,11 @@
 Lighting - Colors
 
+- de lucrat la clasa Texture
+    - de scos stb_image din proiect
+
 - o clasa WindowCallbacks 
     - in care avem functiile statice de la fereastra
 
 - o clasa pentru consola in care afisam mesaje
 
-- o clasa Time
+- o clasa FpsCounter?

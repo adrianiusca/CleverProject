@@ -24,6 +24,7 @@
                 "Code/Engine/Common/Flag.cpp",
                 "Code/Engine/Common/File.cpp",
                 "Code/Engine/Common/Object.cpp",
+                "Code/Engine/Common/Time.cpp",
                 "Code/Engine/Resources/Resource.cpp",
                 "Code/Engine/Resources/DynamicResource.cpp",
                 "Code/Engine/Resources/Shaders/Shader.cpp",

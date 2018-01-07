@@ -10,7 +10,7 @@ namespace cp
     typedef map<ShaderUniforms, i32> Uniforms;
     typedef map<VertexAttributes, i32> Attributes;
 
-    typedef vector<std::shared_ptr<Shader>> Shaders;
+    typedef vector<shared_ptr<Shader>> Shaders;
 
     class Program : public DynamicResource
     {
@@ -48,11 +48,11 @@ namespace cp
         void use() const;
 
     private:
-        void attach_shader(std::shared_ptr<Shader> shader) const;
-        void detach_shader(std::shared_ptr<Shader> shader) const;
+        void attach_shader(shared_ptr<Shader> shader) const;
+        void detach_shader(shared_ptr<Shader> shader) const;
 
-        int get_attribute_location(const std::string& name);
-        int get_uniform_location(const std::string& name);
+        int get_attribute_location(const string& name);
+        int get_uniform_location(const string& name);
 
         bool create() override;
         bool release() override;

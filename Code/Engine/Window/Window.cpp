@@ -16,7 +16,7 @@ namespace cp
     {
         if (m_size == ivec2())
         {
-            std::cout << "window size is zero" << std::endl;
+            cout << "window size is zero" << endl;
 
             return false;
         }
@@ -54,19 +54,19 @@ namespace cp
 
         if (!m_ptr)
         {
-            std::cout << "[GLFW] pointer is null" << std::endl;
+            cout << "[GLFW] pointer is null" << endl;
 
             return false;
         }
 
-        std::cout << "[GLFW] pointer is ok" << std::endl;
+        cout << "[GLFW] pointer is ok" << endl;
 
         return true;
     }
 
     void Window::make_context_current() const
     {
-        std::cout << "[GLFW] set context as current" << std::endl;
+        cout << "[GLFW] set context as current" << endl;
 
         glfwMakeContextCurrent(m_ptr);
     }
@@ -75,7 +75,7 @@ namespace cp
     {
         if (glfwWindowShouldClose(m_ptr) == GLFW_TRUE)
         {
-            std::cout << "The Window is closing" << std::endl;
+            cout << "The Window is closing" << endl;
 
             return true;
         }

@@ -1,10 +1,14 @@
 #pragma once
 
-#include "Engine/Common/File.hpp"
+#include "Engine/Resources/DynamicResource.hpp"
 
 namespace cp
 {
-    class Texture
+    class Texture : public DynamicResource
     {
+    public:
+
+    private:
+    
     };
 }

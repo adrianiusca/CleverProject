@@ -10,6 +10,7 @@
 
 #include "Engine/Renderer/RendererApi.hpp"
 #include "Engine/Common/File.hpp"
+#include "Engine/Common/Time.hpp"
 
 #include "Editor/Importers/TextureImporter.hpp"
 
@@ -18,19 +19,15 @@ const unsigned int SCR_WIDTH  = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 // camera
-Camera camera(glm::vec3(0.0f, 2.0f, 5.0f));
+Camera camera(vec3(0.0f, 2.0f, 5.0f));
 
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 
 bool firstMouse = true;
 
-// timing
-float deltaTime = 0.0f;	// time between current frame and last frame
-float lastFrame = 0.0f;
-
 // grid
-std::vector<glm::vec3> cubePositions;
+vector<vec3> cubePositions;
 
 void createRandomGrid()
 {
@@ -47,10 +44,10 @@ void createRandomGrid()
 
             if (c != 0 && r != 0 && c < maxColumns -1  && r < maxRows - 1)
             {
-                y = glm::linearRand(0, 1);
+                y = linearRand(0, 1);
             }
 
-            cubePositions.push_back(glm::vec3(r, y, c));
+            cubePositions.push_back(vec3(r, y, c));
         }
     }
 }
@@ -68,16 +65,16 @@ void processInput(GLFWwindow* window)
     }
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.ProcessKeyboard(FORWARD, deltaTime);
+        camera.ProcessKeyboard(FORWARD, cp::Time::delta_time());
 
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
+        camera.ProcessKeyboard(BACKWARD, cp::Time::delta_time());
 
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.ProcessKeyboard(LEFT, deltaTime);
+        camera.ProcessKeyboard(LEFT, cp::Time::delta_time());
         
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, deltaTime);
+        camera.ProcessKeyboard(RIGHT, cp::Time::delta_time());
 
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
     {
@@ -273,7 +270,7 @@ int main()
     }
     else
     {
-        std::cout << "Failed to load texture" << std::endl;
+        cout << "Failed to load texture" << endl;
     }
 
     stbi_image_free(data);
@@ -297,7 +294,7 @@ int main()
     }
     else
     {
-        std::cout << "Failed to load texture" << std::endl;
+        cout << "Failed to load texture" << endl;
     }
 
     stbi_image_free(data);
@@ -308,9 +305,6 @@ int main()
     // seed the random
     srand(static_cast<int>(time(0)));
 
-    int fps;
-    float t = 0;
-
     program->add_uniform(cp::ShaderUniforms::VIEW_MATRIX, "view");
     program->add_uniform(cp::ShaderUniforms::MODEL_MATRIX, "model");
     program->add_uniform(cp::ShaderUniforms::PROJECTION_MATRIX, "projection");
@@ -318,20 +312,22 @@ int main()
     program->add_uniform(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_1, "texture1");
     program->add_uniform(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_2, "texture2");
 
+    cp::Time::start();
+
+    int fps;
+    float t = 0;
+
     while (!window.is_closing())
     {
-        // per-frame time logic
-        // --------------------
-        float currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+        cp::Time::update();
+
+        t += cp::Time::delta_time();
 
         fps++;
-        t += deltaTime;
 
         if (t >= 1.0f)
         {
-            std::string info = "FPS: " + std::to_string(fps) + " delta " + std::to_string(deltaTime);
+            string info = "FPS: " + to_string(fps) + " delta " + to_string(cp::Time::delta_time());
 
             window.set_info(info);
 
@@ -346,11 +342,11 @@ int main()
         program->use();
 
         // transformation
-        glm::mat4 view(1.0f);
-        glm::mat4 projection(1.0f);
+        mat4 view(1.0f);
+        mat4 projection(1.0f);
 
         view = camera.GetViewMatrix();
-        projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
+        projection = perspective(radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
 
         program->set_mat4(cp::ShaderUniforms::VIEW_MATRIX, view);
         program->set_mat4(cp::ShaderUniforms::PROJECTION_MATRIX, projection);    
@@ -368,8 +364,8 @@ int main()
 
         for (unsigned int i = 0; i < cubePositions.size(); i++)
         {
-            glm::mat4 model;
-            model = glm::translate(model, cubePositions[i]);
+            mat4 model;
+            model = translate(model, cubePositions[i]);
             
             program->set_mat4(cp::ShaderUniforms::MODEL_MATRIX, model);
 

@@ -16,7 +16,7 @@ namespace cp
         }
     }
 
-    void Program::add_shader(std::shared_ptr<Shader> shader)
+    void Program::add_shader(shared_ptr<Shader> shader)
     {
         if (shader)
         {
@@ -43,7 +43,7 @@ namespace cp
         }
     }
 
-    void Program::add_uniform(ShaderUniforms uniform, const std::string& name)
+    void Program::add_uniform(ShaderUniforms uniform, const string& name)
     {
         int value = get_uniform_location(name);
 
@@ -57,7 +57,7 @@ namespace cp
         }
     }
 
-    void Program::add_attribute(VertexAttributes attribute, const std::string& name)
+    void Program::add_attribute(VertexAttributes attribute, const string& name)
     {
         int value = get_attribute_location(name);
 
@@ -71,29 +71,29 @@ namespace cp
         }
     }
 
-    void Program::set_mat4(ShaderUniforms uniform, const glm::mat4& matrix) const
+    void Program::set_mat4(ShaderUniforms uniform, const mat4& matrix) const
     {
-        glUniformMatrix4fv(m_uniforms.at(uniform), 1, GL_FALSE, glm::value_ptr(matrix));
+        glUniformMatrix4fv(m_uniforms.at(uniform), 1, GL_FALSE, value_ptr(matrix));
     }
 
-    void Program::set_mat3(ShaderUniforms uniform, const glm::mat3& matrix) const
+    void Program::set_mat3(ShaderUniforms uniform, const mat3& matrix) const
     {
-        glUniformMatrix3fv(m_uniforms.at(uniform), 1, GL_FALSE, glm::value_ptr(matrix));
+        glUniformMatrix3fv(m_uniforms.at(uniform), 1, GL_FALSE, value_ptr(matrix));
     }
 
-    void Program::set_vec4(ShaderUniforms uniform, const glm::vec4& vec) const
+    void Program::set_vec4(ShaderUniforms uniform, const vec4& vec) const
     {
-        glUniform4fv(m_uniforms.at(uniform), 1, glm::value_ptr(vec));
+        glUniform4fv(m_uniforms.at(uniform), 1, value_ptr(vec));
     }
 
-    void Program::set_vec3(ShaderUniforms uniform, const glm::vec3& vec) const
+    void Program::set_vec3(ShaderUniforms uniform, const vec3& vec) const
     {
-        glUniform3fv(m_uniforms.at(uniform), 1, glm::value_ptr(vec));
+        glUniform3fv(m_uniforms.at(uniform), 1, value_ptr(vec));
     }
 
-    void Program::set_vec2(ShaderUniforms uniform, const glm::vec2& vec) const
+    void Program::set_vec2(ShaderUniforms uniform, const vec2& vec) const
     {
-        glUniform2fv(m_uniforms.at(uniform), 1, glm::value_ptr(vec));
+        glUniform2fv(m_uniforms.at(uniform), 1, value_ptr(vec));
     }
 
     void Program::set_float(ShaderUniforms uniform, float value) const
@@ -141,22 +141,22 @@ namespace cp
         glUseProgram(m_program_id);
     }
 
-    void Program::attach_shader(std::shared_ptr<Shader> shader) const
+    void Program::attach_shader(shared_ptr<Shader> shader) const
     {
         glAttachShader(m_program_id, shader->get_shader_id());
     }
 
-    void Program::detach_shader(std::shared_ptr<Shader> shader) const
+    void Program::detach_shader(shared_ptr<Shader> shader) const
     {
         glDetachShader(m_program_id, shader->get_shader_id());
     }
 
-    int Program::get_attribute_location(const std::string& name)
+    int Program::get_attribute_location(const string& name)
     {
         return glGetAttribLocation(m_program_id, name.c_str());
     }
 
-    int Program::get_uniform_location(const std::string& name)
+    int Program::get_uniform_location(const string& name)
     {
         return glGetUniformLocation(m_program_id, name.c_str());
     }
@@ -229,7 +229,7 @@ namespace cp
 
             if (length)
             {
-                std::vector<char> error(std::max(length, 1));
+                vector<char> error(std::max(length, 1));
                 glGetProgramInfoLog(m_program_id, length, nullptr, &error.front());
 
                 cout << "program " << m_id << " has a problem:" << endl;
