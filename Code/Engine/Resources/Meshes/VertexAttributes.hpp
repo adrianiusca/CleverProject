@@ -4,10 +4,10 @@ namespace cp
 {
     enum VertexAttributes
     {
-        POSITION,
-        NORMAL,
-        TEXTURE,
+        ATTRIBUTE_POSITION,
+        ATTRIBUTE_NORMAL,
+        ATTRIBUTE_TEXTURE,
 
-        ATTRIBUTES
+        ATTRIBUTES_SIZE
     };
 }

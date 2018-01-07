@@ -21,7 +21,7 @@ namespace cp
 
     void Time::update()
     {
-        Clock::time_point new_time = Clock::now();
+        auto new_time = Clock::now();
 
         nanoseconds time_difference = duration_cast<nanoseconds>(new_time - sm_last_time);
 

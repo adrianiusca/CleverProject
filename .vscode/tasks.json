@@ -16,10 +16,8 @@
                 "-Werror",
                 "-Wfatal-errors",
             
-                "Code/Camera.cpp",
-                "Code/stb_image.cpp",
-                
                 "Code/Main.cpp",
+                "Code/Camera.cpp",
                 "Code/Editor/Importers/TextureImporter.cpp",
                 "Code/Engine/Common/Flag.cpp",
                 "Code/Engine/Common/File.cpp",
@@ -29,6 +27,8 @@
                 "Code/Engine/Resources/DynamicResource.cpp",
                 "Code/Engine/Resources/Shaders/Shader.cpp",
                 "Code/Engine/Resources/Shaders/Program.cpp",
+                "Code/Engine/Resources/Textures/Texture.cpp",
+                "Code/Engine/Resources/Textures/TextureData.cpp",
                 "Code/Engine/Window/Window.cpp",
                 "Code/Engine/Window/WindowApi.cpp",
                 "Code/Engine/Window/WindowCallbacks.cpp",

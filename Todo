@@ -1,7 +1,14 @@
 Lighting - Colors
 
+- in texture importer 
+    - sa folosim o functie din api in loc de acel for ce tine loc de swap
+    - in loc de FreeImage_FlipVertical ar trebui sa folosim un rotate???
+
 - de lucrat la clasa Texture
-    - de scos stb_image din proiect
+    - bits per pixel sa stea in texture data? (are sens)
+
+- in clasa TextureData sa nu mai dam elements la get pixels
+    - poate si o metoda care foloseste x si y pentru aceeasi metoda
 
 - o clasa WindowCallbacks 
     - in care avem functiile statice de la fereastra
@@ -9,3 +16,12 @@ Lighting - Colors
 - o clasa pentru consola in care afisam mesaje
 
 - o clasa FpsCounter?
+
+- de folosit cat mai mult assert 
+    - pentru a nu face multe verificari la run time aiurea 
+        - cand nu suntem pe debug
+
+- de scos acele using namespace
+    - dar peste o luna doua
+        - cand proiectul e mai avansat 
+        - se aduna prea multe proiecte

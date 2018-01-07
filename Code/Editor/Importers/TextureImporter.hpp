@@ -18,8 +18,9 @@ namespace cp
         bool write();
 
     private:
-        i32 m_bits_per_pixel;
-        
+        u32 m_bits_per_pixel;
+        u32 m_format;
+
         ivec2 m_size;
 
         File m_file;

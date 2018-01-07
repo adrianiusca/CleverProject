@@ -7,6 +7,7 @@ namespace cp
         SHADER,
         PROGRAM,
         MATERIAL,
+        TEXTURE,
         MESH
     };
 }

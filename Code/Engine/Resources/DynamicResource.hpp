@@ -14,7 +14,7 @@ namespace cp
         bool is_loaded() const;
 
     protected:
-        explicit DynamicResource(int id, ResourceTypes type, shared_ptr<File> = nullptr);
+        explicit DynamicResource(i32 id, ResourceTypes type, shared_ptr<File> = nullptr);
 
         virtual ~DynamicResource() = default;
 
@@ -24,6 +24,6 @@ namespace cp
 
     private:
         bool m_is_loaded;
-        int m_counter;
+        i32 m_counter;
     };
 }

@@ -1,5 +1,3 @@
-#include "stb_image.h"
-
 #include "Camera.hpp"
 
 #include "Engine/Window/WindowApi.hpp"
@@ -7,8 +5,10 @@
 
 #include "Engine/Resources/Shaders/Shader.hpp"
 #include "Engine/Resources/Shaders/Program.hpp"
+#include "Engine/Resources/Textures/Texture.hpp"
 
 #include "Engine/Renderer/RendererApi.hpp"
+
 #include "Engine/Common/File.hpp"
 #include "Engine/Common/Time.hpp"
 
@@ -220,6 +220,21 @@ int main()
     program->add_shaders({ vertex_shader, fragment_shader });
     program->load();
 
+
+    cp::TextureImporter container_importer(cp::File(path("Assets/container.jpg")));
+    cp::TextureImporter face_importer(cp::File(path("Assets/awesomeface.png")));
+
+    container_importer.load();
+    face_importer.load();
+
+    shared_ptr<cp::Texture> container_texture = make_shared<cp::Texture>(4, make_shared<cp::File>(path("Assets/container.texture")));
+    container_texture->use_mipmaps();
+    container_texture->load();
+
+    shared_ptr<cp::Texture> face_texture = make_shared<cp::Texture>(5, make_shared<cp::File>(path("Assets/awesomeface.texture")));
+    face_texture->use_mipmaps();
+    face_texture->load();
+
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -243,61 +258,6 @@ int main()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    // textures
-    cp::TextureImporter importer(cp::File(path("Assets/container.jpg")));
-
-    importer.load();
-
-    unsigned int texture1;
-    glGenTextures(1, &texture1); 
-
-    glBindTexture(GL_TEXTURE_2D, texture1); 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    int width, height, nrChannels;
-
-    stbi_set_flip_vertically_on_load(true); 
-    unsigned char *data = stbi_load("Assets/container.jpg", &width, &height, &nrChannels, 0);
-
-    if (data)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        cout << "Failed to load texture" << endl;
-    }
-
-    stbi_image_free(data);
-
-    unsigned int texture2;
-    glGenTextures(1, &texture2); 
-
-    glBindTexture(GL_TEXTURE_2D, texture2); 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    data = stbi_load("Assets/awesomeface.png", &width, &height, &nrChannels, 0);
-
-    if (data)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        cout << "Failed to load texture" << endl;
-    }
-
-    stbi_image_free(data);
 
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -354,11 +314,11 @@ int main()
         program->set_int(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_1, 0);
         program->set_int(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_2, 1);
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture1);
+        cp::Texture::activate(0);
+        container_texture->bind();
 
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture2);
+        cp::Texture::activate(1);
+        face_texture->bind();
 
         glBindVertexArray(VAO);
 
