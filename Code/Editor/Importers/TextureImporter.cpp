@@ -42,7 +42,10 @@ namespace cp
             return false;
         }
 
-        FreeImage_FlipVertical(bitmap);
+        if (FreeImage_FlipVertical(bitmap))
+        {
+            cout << "image flipped (vertical)" << endl;
+        }
 
         m_bits_per_pixel = FreeImage_GetBPP(bitmap);
         m_size = ivec2(FreeImage_GetWidth(bitmap), FreeImage_GetHeight(bitmap));
@@ -79,18 +82,7 @@ namespace cp
             return false;
         }
 
-        if (m_bits_per_pixel == 8)
-		{
-			m_format = GL_LUMINANCE;
-		}
-		else if (m_bits_per_pixel == 24)
-		{
-			m_format = GL_RGB;
-		}
-		else if (m_bits_per_pixel == 32)
-		{
-			m_format = GL_RGBA;
-		}
+        check_format();
 
         m_file.write<ivec2>(&m_size, sizeof(ivec2));
         m_file.write<u32>(&m_bits_per_pixel, sizeof(u32));
@@ -114,5 +106,21 @@ namespace cp
         m_file.close();
 
         return true;
+    }
+
+    void TextureImporter::check_format()
+    {
+        if (m_bits_per_pixel == 8)
+		{
+			m_format = GL_LUMINANCE;
+		}
+		else if (m_bits_per_pixel == 24)
+		{
+			m_format = GL_RGB;
+		}
+		else if (m_bits_per_pixel == 32)
+		{
+			m_format = GL_RGBA;
+		}
     }
 }

@@ -16,6 +16,8 @@ namespace cp
         TextureImporter &operator=(const TextureImporter &) = delete;
 
         bool write();
+        
+        void check_format();
 
     private:
         u32 m_bits_per_pixel;

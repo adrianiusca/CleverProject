@@ -17,7 +17,7 @@ namespace cp
         return m_pixels;
     }
 
-    u8* TextureData::get_pointer()
+    u8* TextureData::get_ptr()
     {
         return m_pixels.data();
     }

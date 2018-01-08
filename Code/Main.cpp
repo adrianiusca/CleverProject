@@ -11,8 +11,10 @@
 
 #include "Engine/Common/File.hpp"
 #include "Engine/Common/Time.hpp"
+#include "Engine/Common/Input.hpp"
 
 #include "Editor/Importers/TextureImporter.hpp"
+#include "Editor/Importers/SceneImporter.hpp"
 
 // settings
 const unsigned int SCR_WIDTH  = 800;
@@ -56,31 +58,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
 }  
-
-void processInput(GLFWwindow* window)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
-        glfwSetWindowShouldClose(window, true);
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.ProcessKeyboard(FORWARD, cp::Time::delta_time());
-
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.ProcessKeyboard(BACKWARD, cp::Time::delta_time());
-
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.ProcessKeyboard(LEFT, cp::Time::delta_time());
-        
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, cp::Time::delta_time());
-
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-    {
-        createRandomGrid();
-    }
-}
 
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
@@ -145,75 +122,58 @@ int main()
     glfwSetScrollCallback(window.get_ptr(), scroll_callback);
 
     // tell GLFW to capture our mouse
-    glfwSetInputMode(window.get_ptr(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    //glfwSetInputMode(window.get_ptr(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // disable 60 fps limit
     glfwSwapInterval(0);
 
     glViewport(0, 0, 800, 600);
 
-    /*float vertices[] = 
-    {
-        // positions         // texture coords
-        0.5f,  0.5f, 0.0f,   1.0f, 1.0f,   // top right
-        0.5f, -0.5f, 0.0f,   1.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,   // bottom left
-        -0.5f,  0.5f, 0.0f,  0.0f, 1.0f    // top left 
-    };*/
-
     float vertices[] = 
     {
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+        1.000000, 1.000000, -1.000000, 0.000000, 0.000000,
+        -1.000000, -1.000000, -1.000000, 1.000000, 1.000000,
+        -1.000000, 1.000000, -1.000000, 0.000000, 1.000000,
+        -1.000000, 1.000000, 1.000000, 1.000000, 0.000000,
+        0.999999, -1.000001, 1.000000, 0.000000, 1.000000,
+        1.000000, 1.000000, 1.000000, 0.000000, 0.000000,
+        1.000000, 1.000000, 1.000000, 1.000000, 0.000000,
+        1.000000, -1.000000, -1.000000, 0.000000, 1.000000,
+        1.000000, 1.000000, -1.000000, 0.000000, 0.000000,
+        0.999999, -1.000001, 1.000000, 1.000000, 0.000000,
+        -1.000000, -1.000000, -1.000000, 0.000000, 1.000000,
+        1.000000, -1.000000, -1.000000, 0.000000, 0.000000,
+        -1.000000, -1.000000, -1.000000, 0.000000, 0.000000,
+        -1.000000, 1.000000, 1.000000, 1.000000, 1.000000,
+        -1.000000, 1.000000, -1.000000, 0.000000, 1.000000,
+        1.000000, 1.000000, -1.000000, 1.000000, 0.000000,
+        -1.000000, 1.000000, 1.000000, 0.000000, 1.000000,
+        1.000000, 1.000000, 1.000000, 0.000000, 0.000000,
+        1.000000, -1.000000, -1.000000, 1.000000, 0.000000,
+        -1.000000, -1.000000, 1.000000, 1.000000, 1.000000,
+        0.999999, -1.000001, 1.000000, 1.000000, 1.000000,
+        -1.000000, -1.000000, 1.000000, 1.000000, 1.000000,
+        -1.000000, -1.000000, 1.000000, 1.000000, 0.000000,
+        -1.000000, 1.000000, -1.000000, 1.000000, 1.000000,
     };
 
     unsigned int indices[] = 
     { 
-        // quad
-        0, 1, 3,
-        1, 2, 3
+        0, 1, 2,
+        3, 4, 5,
+        6, 7, 8,
+        9, 10, 11,
+        12, 13, 14,
+        15, 16, 17,
+        0, 18, 1,
+        3, 19, 4,
+        6, 20, 7,
+        9, 21, 10,
+        12, 22, 13,
+        15, 23, 16,
     };  
 
-    shared_ptr<cp::Shader> vertex_shader = make_shared<cp::Shader>(1, make_shared<cp::File>(path("Assets/BasicShader.vs")), GL_VERTEX_SHADER);
+    shared_ptr<cp::Shader> vertex_shader   = make_shared<cp::Shader>(1, make_shared<cp::File>(path("Assets/BasicShader.vs")), GL_VERTEX_SHADER);
     shared_ptr<cp::Shader> fragment_shader = make_shared<cp::Shader>(2, make_shared<cp::File>(path("Assets/BasicShader.fs")), GL_FRAGMENT_SHADER);
 
     shared_ptr<cp::Program> program = make_shared<cp::Program>(3);
@@ -234,6 +194,9 @@ int main()
     shared_ptr<cp::Texture> face_texture = make_shared<cp::Texture>(5, make_shared<cp::File>(path("Assets/awesomeface.texture")));
     face_texture->use_mipmaps();
     face_texture->load();
+
+    cp::SceneImporter cube_importer(cp::File(path("Assets/container.dae")));
+    cube_importer.load();
 
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
@@ -295,7 +258,37 @@ int main()
             fps = 0;
         }
 
-        processInput(window.get_ptr());
+        // input - begin
+        if (cp::Input::is_key_down(GLFW_KEY_ESCAPE, true))
+        {
+            window.close();
+        }
+
+        if (cp::Input::is_key_down(GLFW_KEY_W))
+        {
+            camera.ProcessKeyboard(FORWARD, cp::Time::delta_time());
+        }
+
+        if (cp::Input::is_key_down(GLFW_KEY_S))
+        {
+            camera.ProcessKeyboard(BACKWARD, cp::Time::delta_time());
+        }
+
+        if (cp::Input::is_key_down(GLFW_KEY_A))
+        {
+            camera.ProcessKeyboard(LEFT, cp::Time::delta_time());
+        }
+
+        if (cp::Input::is_key_down(GLFW_KEY_D))
+        {
+            camera.ProcessKeyboard(RIGHT, cp::Time::delta_time());
+        }
+        
+        if (cp::Input::is_key_down(GLFW_KEY_SPACE, true))
+        {
+            createRandomGrid();
+        }
+        // input - end
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -329,7 +322,7 @@ int main()
             
             program->set_mat4(cp::ShaderUniforms::MODEL_MATRIX, model);
 
-            glDrawArrays(GL_TRIANGLES, 0, 36);
+            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, static_cast<const void*>(0));
         }
 
         window.update();

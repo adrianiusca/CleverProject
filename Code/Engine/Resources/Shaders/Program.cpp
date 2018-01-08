@@ -230,11 +230,11 @@ namespace cp
             if (length)
             {
                 vector<char> error(std::max(length, 1));
-                glGetProgramInfoLog(m_program_id, length, nullptr, &error.front());
+                glGetProgramInfoLog(m_program_id, length, nullptr, error.data());
 
                 cout << "program " << m_id << " has a problem:" << endl;
 
-                fprintf(stdout, "%s\n", &error.front());
+                fprintf(stdout, "%s\n", error.data());
             }
 
             return false;

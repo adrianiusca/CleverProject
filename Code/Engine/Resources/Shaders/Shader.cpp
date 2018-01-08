@@ -82,11 +82,11 @@ namespace cp
             if (length)
             {
                 vector<char> error(length);
-                glGetShaderInfoLog(m_shader_id, length, nullptr, &error.front());
+                glGetShaderInfoLog(m_shader_id, length, nullptr, error.data());
 
                 cout << "shader " << m_file->get_filename() << " has a problem:" << endl;
 
-                fprintf(stdout, "%s\n", &error.front());
+                fprintf(stdout, "%s\n", error.data());
             }
 
             return false;

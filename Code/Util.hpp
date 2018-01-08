@@ -32,6 +32,9 @@
 
 // importers
 #include <FreeImage.h>
+#include <assimp/scene.h>
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
 
 using namespace glm;
 using namespace std;

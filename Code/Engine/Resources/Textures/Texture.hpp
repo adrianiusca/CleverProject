@@ -1,7 +1,6 @@
 #pragma once
 
 #include "TextureData.hpp"
-#include "TextureFlags.hpp"
 #include "Engine/Resources/DynamicResource.hpp"
 
 namespace cp

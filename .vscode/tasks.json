@@ -9,6 +9,7 @@
             "command": "/usr/bin/clang++-5.0",
             "args": [
                 "-g",
+                
                 "-std=c++1z",
                 "-fno-exceptions",
                 
@@ -18,23 +19,29 @@
             
                 "Code/Main.cpp",
                 "Code/Camera.cpp",
+                "Code/Editor/Importers/MeshImporter.cpp",
+                "Code/Editor/Importers/SceneImporter.cpp",
                 "Code/Editor/Importers/TextureImporter.cpp",
                 "Code/Engine/Common/Flag.cpp",
                 "Code/Engine/Common/File.cpp",
                 "Code/Engine/Common/Object.cpp",
                 "Code/Engine/Common/Time.cpp",
+                "Code/Engine/Common/Input.cpp",
                 "Code/Engine/Resources/Resource.cpp",
                 "Code/Engine/Resources/DynamicResource.cpp",
                 "Code/Engine/Resources/Shaders/Shader.cpp",
                 "Code/Engine/Resources/Shaders/Program.cpp",
                 "Code/Engine/Resources/Textures/Texture.cpp",
                 "Code/Engine/Resources/Textures/TextureData.cpp",
+                "Code/Engine/Resources/Meshes/MeshData.cpp",
+                "Code/Engine/Resources/Meshes/Mesh.cpp",
                 "Code/Engine/Window/Window.cpp",
                 "Code/Engine/Window/WindowApi.cpp",
                 "Code/Engine/Window/WindowCallbacks.cpp",
                 "Code/Engine/Renderer/RendererApi.cpp",
 
                 "-I Code",
+
                 "-I /usr/include",
                 "-L /usr/lib/x86_64-linux-gnu",
 
@@ -42,6 +49,7 @@
                 "-l GLEW",
                 "-l glfw",
                 "-l freeimage",
+                "-l assimp",
 
                 // c++ experimental
                 "-l stdc++fs", 

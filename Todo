@@ -10,9 +10,6 @@ Lighting - Colors
 - in clasa TextureData sa nu mai dam elements la get pixels
     - poate si o metoda care foloseste x si y pentru aceeasi metoda
 
-- o clasa WindowCallbacks 
-    - in care avem functiile statice de la fereastra
-
 - o clasa pentru consola in care afisam mesaje
 
 - o clasa FpsCounter?
@@ -25,3 +22,22 @@ Lighting - Colors
     - dar peste o luna doua
         - cand proiectul e mai avansat 
         - se aduna prea multe proiecte
+
+- de inlocuit peste tot int, float, unsigned ....
+
+- mouse callbacks de inlocuit cu clasa noastra de Input
+    - sau ce se poate face
+
+- de curatat fisierele Window.cpp (legacy)
+
+- in MeshData o functie gen add_points care primeste un vector de puncte
+    - vertices si indices
+    - mai usor de folosit cand vrei sa dai repede mai multe???
+
+- O clasa? un Manager 
+    - care sa creeze numarul necesar de buffere pentru GL si de Vao
+        - primim numarul de la editor cu maximul de buffere?
+        - acelasi lucru si pentru texturi????
+
+- Importerele returneaza o resursa de tipul respectiv ??? 
+    - are sens, nu mai avem variabile membre de doua ori

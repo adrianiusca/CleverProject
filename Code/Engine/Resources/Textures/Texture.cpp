@@ -1,4 +1,5 @@
 #include "Texture.hpp"
+#include "TextureFlags.hpp"
 #include "Engine/Common/File.inl"
 
 namespace cp
@@ -91,7 +92,7 @@ namespace cp
 
         m_data = make_shared<TextureData>(image_size);
 
-        m_file->read<u8>(m_data->get_pointer(), image_size);
+        m_file->read<u8>(m_data->get_ptr(), image_size);
 
         m_file->close();
 
@@ -110,9 +111,16 @@ namespace cp
 
     bool Texture::create()
     {   
-        if (!parse())
+        if (m_file)
         {
-            return false;
+            if (!parse())
+            {
+                cout << "file connot be parsed for texture id " << m_id << endl;
+
+                return false;
+            }
+
+            cout << "file parsed correctly" << endl;
         }
 
         if (m_data->is_empty())
@@ -148,7 +156,7 @@ namespace cp
         glTexImage2D(GL_TEXTURE_2D, 0, m_format, 
                                        m_size.x, 
                                        m_size.y, 0, 
-                                       m_format, GL_UNSIGNED_BYTE, m_data->get_pointer());
+                                       m_format, GL_UNSIGNED_BYTE, m_data->get_ptr());
 
         if (is_using_mimaps())
 		{

@@ -12,10 +12,10 @@ namespace cp
         ivec4 get_pixel(i32 index, u32 elements) const;
         const vector<u8>& get_pixels() const;
 
-        u8* get_pointer();
+        u8* get_ptr();
 
         bool is_empty() const;
-
+        
         void resize(u32 size);
         void clear();
 

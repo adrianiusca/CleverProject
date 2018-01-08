@@ -1,5 +1,6 @@
 #include "Window.hpp"
 #include "WindowApi.hpp"
+#include "WindowCallbacks.hpp"
 
 namespace cp
 {
@@ -45,6 +46,8 @@ namespace cp
 
         make_context_current();
 
+        init_callbacks();
+
         return true;
     }
 
@@ -63,7 +66,7 @@ namespace cp
 
         return true;
     }
-
+    
     void Window::make_context_current() const
     {
         cout << "[GLFW] set context as current" << endl;
@@ -159,5 +162,13 @@ namespace cp
     void Window::close()
     {
         glfwSetWindowShouldClose(m_ptr, true);
+    }
+
+    void Window::init_callbacks() const
+    {
+        glfwSetMouseButtonCallback(m_ptr, WindowCallbacks::mouse_clicks);
+		glfwSetCursorPosCallback(m_ptr, WindowCallbacks::mouse_position);
+
+		glfwSetKeyCallback(m_ptr, WindowCallbacks::keyboard_keys);
     }
 }
