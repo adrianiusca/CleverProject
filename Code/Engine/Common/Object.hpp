@@ -14,7 +14,7 @@ namespace cp
         i32 get_id() const;
 
     protected:
-        explicit Object(int id);
+        explicit Object(i32 id);
         
         virtual ~Object() = default;
 

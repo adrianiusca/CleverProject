@@ -20,7 +20,7 @@ namespace cp
         void check_vertex_size_and_offsets(const aiMesh* mesh);
 
     private:
-        Attributes m_offsets;
+        Offsets m_offsets;
 
         u32 m_drawing_primitive;
         u32 m_vertex_size;

@@ -15,12 +15,7 @@ namespace cp
 
     bool Window::create(bool is_resizable)
     {
-        if (m_size == ivec2())
-        {
-            cout << "window size is zero" << endl;
-
-            return false;
-        }
+        assert(m_size != ivec2());
 
         if (!WindowApi::init())
         {
@@ -113,16 +108,12 @@ namespace cp
         if (m_is_fullscreen)
         {
             monitor = glfwGetPrimaryMonitor();
-
-            if (monitor)
-            {
-                const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-
-                if (mode)
-                {
-                    m_size = ivec2(mode->width, mode->height);
-                }
-            }
+            assert(monitor);
+            
+            const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+            assert(mode);
+                
+            m_size = ivec2(mode->width, mode->height);
         }
 
         return monitor;

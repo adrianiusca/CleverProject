@@ -1,6 +1,6 @@
 #include "Texture.hpp"
 #include "TextureFlags.hpp"
-#include "Engine/Common/File.inl"
+#include "Engine/Common/File/File.inl"
 
 namespace cp
 {
@@ -69,13 +69,6 @@ namespace cp
 
     bool Texture::parse()
     {
-        if (!m_file)
-        {
-            cout << "do not have a file for the texture " << m_id << endl;
-
-            return false;
-        }
-
         if (!m_file->open())
         {
             cout << "could not open the file for the texture " << m_id << endl;

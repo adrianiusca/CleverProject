@@ -10,9 +10,12 @@
 
 #include "Engine/Renderer/RendererApi.hpp"
 
-#include "Engine/Common/File.hpp"
+#include "Engine/Utils/FpsCounter.hpp"
+
 #include "Engine/Common/Time.hpp"
 #include "Engine/Common/Input.hpp"
+
+#include "Engine/Common/Random/Random.inl"
 
 #include "Editor/Importers/TextureImporter.hpp"
 #include "Editor/Importers/SceneImporter.hpp"
@@ -22,7 +25,7 @@ const unsigned int SCR_WIDTH  = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 // camera
-Camera camera(vec3(0.0f, 0.0f, 5.0f));
+Camera camera(vec3(5.0f, 3.0f, 5.0f));
 
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
@@ -47,7 +50,7 @@ void createRandomGrid()
 
             if (c != 0 && r != 0 && c < maxColumns -1  && r < maxRows - 1)
             {
-                y = linearRand(0, 1);
+                y = cp::Random::get_linear(0, 1);
             }
 
             cubePositions.push_back(vec3(r, y, c));
@@ -165,7 +168,7 @@ int main()
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
     // seed the random
-    srand(static_cast<int>(time(0)));
+    cp::Random::seed();
 
     program->add_uniform(cp::ShaderUniforms::VIEW_MATRIX, "view");
     program->add_uniform(cp::ShaderUniforms::MODEL_MATRIX, "model");
@@ -176,28 +179,13 @@ int main()
 
     cp::Time::start();
 
-    int fps;
-    float t = 0;
-
     while (!window.is_closing())
     {
         camera_direction();
 
         cp::Time::update();
 
-        t += cp::Time::delta_time();
-
-        fps++;
-
-        if (t >= 1.0f)
-        {
-            string info = "FPS: " + to_string(fps) + " delta " + to_string(cp::Time::delta_time());
-
-            window.set_info(info);
-
-            t = 0.0f;
-            fps = 0;
-        }
+        //cp::FpsCounter::update();
 
         // input - begin
         if (cp::Input::is_key_down(GLFW_KEY_ESCAPE, true))

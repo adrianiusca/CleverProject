@@ -8,7 +8,7 @@
 namespace cp
 {
     typedef array<u32, MeshBuffers::BUFFERS_SIZE> Buffers;
-    typedef array<u32, VertexAttributes::ATTRIBUTES_SIZE> Attributes;
+    typedef array<u32, VertexAttributes::ATTRIBUTES_SIZE> Offsets;
 
     class Mesh : public DynamicResource
     {
@@ -21,7 +21,7 @@ namespace cp
         void keep_data();
 
         void set_data(const shared_ptr<MeshData>& data);
-        void set_offsets(const Attributes& offsets);
+        void set_offsets(const Offsets& offsets);
 
         void draw() const;
 
@@ -53,7 +53,7 @@ namespace cp
         std::shared_ptr<MeshData> m_data;
 
         Buffers m_buffers;
-        Attributes m_offsets;
+        Offsets m_offsets;
 
         u32 m_vao_id;
 

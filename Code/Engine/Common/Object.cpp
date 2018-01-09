@@ -2,7 +2,7 @@
 
 namespace cp
 {
-    Object::Object(int id)
+    Object::Object(i32 id)
     : m_id(id)
     {
     }
@@ -12,7 +12,7 @@ namespace cp
         m_flag = flag;
     }
 
-    void Object::set_id(int id)
+    void Object::set_id(i32 id)
     {
         m_id = id;
     }
@@ -22,7 +22,7 @@ namespace cp
         return m_flag;
     }
 
-    int Object::get_id() const
+    i32 Object::get_id() const
     {
         return m_id;
     }

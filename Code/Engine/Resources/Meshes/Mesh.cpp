@@ -75,7 +75,7 @@ namespace cp
         m_data = data;
     }
 
-    void Mesh::set_offsets(const Attributes& offsets)
+    void Mesh::set_offsets(const Offsets& offsets)
     {
         m_offsets = offsets;
     }
@@ -100,25 +100,19 @@ namespace cp
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffers[MeshBuffers::BUFFER_IBO]);
     }
 
-    void Mesh::set_drawing_primitive(int drawing_primitive)
+    void Mesh::set_drawing_primitive(i32 drawing_primitive)
     {
-        if (drawing_primitive != GL_POINTS && 
-            drawing_primitive != GL_LINES && 
-            drawing_primitive != GL_TRIANGLES)
-        {
-            cout << "did not pass the correct drawing primitive for mesh " << m_id << endl;
-        }
+        assert(drawing_primitive == GL_POINTS || 
+               drawing_primitive == GL_LINES ||
+               drawing_primitive == GL_TRIANGLES);
 
         m_drawing_primitive = drawing_primitive;
     }
 
-    void Mesh::set_drawing_type(int drawing_type)
+    void Mesh::set_drawing_type(i32 drawing_type)
     {
-        if (drawing_type != GL_STATIC_DRAW && 
-            drawing_type != GL_DYNAMIC_DRAW)
-        {
-            cout << "did not pass the correct drawing type for mesh " << m_id << endl;
-        }
+        assert(drawing_type == GL_STATIC_DRAW ||
+               drawing_type == GL_DYNAMIC_DRAW);
 
         m_drawing_type = drawing_type;
     }    

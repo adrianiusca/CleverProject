@@ -1,0 +1,20 @@
+- Joc inspirat dupa XCOM 1 sau 2
+
+- Un joc tactic cu spioni / hoti (gen diabolic, james bond, etc.)
+- Jocul este turn based (un numar limitat (3, poate 4 daca faci unlock la un skill) de mutari pe "turn") cu diferite scenarii 
+    - in care trebuie sa fii foarte discret (treci de alarme pentru a ajunge intr-o camera cu un seif)
+    - unde trebuie sa salvezi o persoana sau pur si simplu sa elimini cativa inamici
+
+- Scenariile sunt formate din tile-uri print care caracterele navigheaza sau fac diferite actiuni
+- Jucatorul alege cele mutarile de pe tura lui dupa care asteapta sa vada ce alegeri a facut si ai-ul
+
+- Un numar de 2-3 caractere cu diferite abilitati controlate de jucator
+    - unu poate sa deschida un seif sau usi incuiate, 
+    - altul foarte agil, trece usor de lasere care pot sa activeze alarme
+    - altul bun la impuscat sau lupta corp la corp
+    - etc.
+
+- Jocul are elemente de combat cu arme (pistoale) sau cu maini si picioare
+- Un sistem de covering (mai putin damage)
+- Upgrade-uri, skill-uri si un fel de HQ in care poti sa faci diferite lucruri (sa te antrenezi, recuperezi dupa o misiune, etc)
+    - in HQ nu e turn based (te misti cat doresti)

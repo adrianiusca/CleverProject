@@ -31,8 +31,8 @@ namespace cp
 
 		if (is_down && is_one_time)
 		{
-			std::cout << "mouse button " << std::to_string(button) << " was pressed at position " << static_cast<int>(sm_mouse_position.x) << " " 
-																								  << static_cast<int>(sm_mouse_position.y) << std::endl;
+			cout << "mouse button " << button << " was pressed at position " << static_cast<int>(sm_mouse_position.x) << " " 
+																			 << static_cast<int>(sm_mouse_position.y) << endl;
 
 			sm_clicks.at(button) = false;
 		}

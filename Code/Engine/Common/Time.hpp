@@ -15,6 +15,12 @@ namespace cp
         static f32 delta_time();
 
     private:
+        Time() = delete;
+        Time(const Time &) = delete;
+
+        Time &operator=(const Time &) = delete;
+
+    private:
         static f32 NANOSECONDS;
 
         static Clock::time_point sm_last_time;

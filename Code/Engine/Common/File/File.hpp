@@ -9,6 +9,8 @@ namespace cp
     public:
         explicit File(const path& path);
 
+        ~File();
+
         bool open(const string& mode = "rb");
         void close();
 
@@ -20,8 +22,8 @@ namespace cp
         string get_extension() const;
         string get_data() const;
 
-        template <class T> void read(T* value, int size) const;
-        template <class T> void write(T* value, int size) const;
+        template <class T> void read(T* value, i32 size) const;
+        template <class T> void write(T* value, i32 size) const;
 
     private:
         path m_path;

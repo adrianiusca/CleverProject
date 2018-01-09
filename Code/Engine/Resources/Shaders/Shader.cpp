@@ -21,13 +21,8 @@ namespace cp
 
     bool Shader::create()
     {
-        if (m_shader_type != GL_VERTEX_SHADER && 
-            m_shader_type != GL_FRAGMENT_SHADER)
-        {
-            cout << "did not pass the correct shader type for shader " << m_id << endl;
-
-            return false;
-        }
+        assert(m_shader_type == GL_VERTEX_SHADER ||
+               m_shader_type == GL_FRAGMENT_SHADER);
 
         if (!m_file)
         {

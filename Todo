@@ -12,6 +12,8 @@ Lighting - Colors
 - o clasa pentru consola in care afisam mesaje
 
 - o clasa FpsCounter?
+    - un macro care sa faca un fel de disable 
+        - ca la console
 
 - de folosit cat mai mult assert 
     - pentru a nu face multe verificari la run time aiurea 
@@ -39,8 +41,6 @@ Lighting - Colors
 
 - Importerele returneaza o resursa de tipul respectiv ??? 
     - are sens, nu mai avem variabile membre de doua ori
-
-- in Program de redenumit Uniforms in ShaderUniforms
 
 - de adaugat o functie sau un macro 
     - care sa verifice daca functia apelata la opengl are erori sau nu

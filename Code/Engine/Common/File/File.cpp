@@ -8,6 +8,11 @@ namespace cp
     {
     }
 
+    File::~File()
+    {
+        assert(!m_ptr);
+    }
+
     bool File::open(const string& mode)
     {
         if (m_path.empty())
@@ -67,13 +72,7 @@ namespace cp
     string File::get_data() const
     {
         string data;
-
-        if (m_ptr)
-        {
-            cout << "The file " << m_path.filename() << " is already open for binary reading";
-
-            return data;
-        }
+        assert(!m_ptr);
 
         if (!m_path.empty())
         {
