@@ -18,12 +18,11 @@ namespace cp
 
     void Program::add_shader(shared_ptr<Shader> shader)
     {
-        if (shader)
-        {
-            shader->load();
+        assert(shader);
 
-            m_shaders.push_back(shader);
-        }
+        shader->load();
+
+        m_shaders.push_back(shader);
     }
 
     void Program::remove_shader(int type)

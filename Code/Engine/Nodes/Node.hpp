@@ -7,8 +7,6 @@
 
 namespace cp
 {
-    typedef std::vector<std::shared_ptr<Node>> Children;
-
     class Node : public std::enable_shared_from_this<Node>,
                  public Object
     {
@@ -51,7 +49,7 @@ namespace cp
         bool is_mesh_node() const;
         bool is_enabled() const;
 
-        const Children& get_children() const;
+        const std::vector<std::shared_ptr<Node>>& get_children() const;
 
         std::shared_ptr<Transform> transform() const;
         std::shared_ptr<Node> parent() const;
@@ -60,10 +58,10 @@ namespace cp
         NodeTypes get_type() const;
 
     protected:
-        Node(i32 id, NodeTypes type);
+        Node(i32 id, NodeTypes type, bool is_mesh_node);
 
     protected:
-        Children m_children;
+        std::vector<std::shared_ptr<Node>> m_children;
 
         std::shared_ptr<Transform> m_transform;
         std::shared_ptr<Node> m_parent;

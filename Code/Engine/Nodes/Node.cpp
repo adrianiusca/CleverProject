@@ -2,20 +2,20 @@
 
 namespace cp
 {
-    Node::Node(int id)
-    : Object(id)
-    , m_transform(std::make_shared<Transform>())
-    , m_is_mesh_node(false)
-    , m_is_enabled(true)
-    , m_type(NodeTypes::NODE)
-    , m_tag(NodeTags::NONE)
-    {
-    }
-
-    Node::Node(int id, NodeTypes type)
+    Node::Node(i32 id)
         : Object(id)
         , m_transform(std::make_shared<Transform>())
         , m_is_mesh_node(false)
+        , m_is_enabled(true)
+        , m_type(NodeTypes::NODE)
+        , m_tag(NodeTags::NONE)
+    {
+    }
+
+    Node::Node(i32 id, NodeTypes type, bool is_mesh_node)
+        : Object(id)
+        , m_transform(std::make_shared<Transform>())
+        , m_is_mesh_node(is_mesh_node)
         , m_is_enabled(true)
         , m_type(type)
         , m_tag(NodeTags::NONE)
@@ -57,22 +57,20 @@ namespace cp
 
     void Node::add_child(std::shared_ptr<Node> node)
     {
-        if (node)
-        {
-            node->set_parent(shared_from_this());
+        assert(node);
 
-            m_children.push_back(node);
-        }
+        node->set_parent(shared_from_this());
+
+        m_children.push_back(node);
     }
 
     void Node::add_child_at(std::shared_ptr<Node> node, int index)
     {
-        if (node)
-        {
-            node->set_parent(shared_from_this());
+        assert(node);
+        
+        node->set_parent(shared_from_this());
 
-            m_children.insert(m_children.begin() + index, node);
-        }
+        m_children.insert(m_children.begin() + index, node);
     }
 
     void Node::set_transform(const std::shared_ptr<Transform>& transform)
@@ -119,7 +117,7 @@ namespace cp
         return m_is_enabled;
     }
 
-    const Children& Node::get_children() const
+    const std::vector<std::shared_ptr<Node>>& Node::get_children() const
     {
         return m_children;
     }

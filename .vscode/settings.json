@@ -37,6 +37,9 @@
         "system_error": "cpp",
         "tuple": "cpp",
         "functional": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "condition_variable": "cpp",
+        "mutex": "cpp",
+        "thread": "cpp"
     },
 }

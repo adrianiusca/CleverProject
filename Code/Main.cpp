@@ -185,7 +185,7 @@ int main()
 
         cp::Time::update();
 
-        //cp::FpsCounter::update();
+        cp::FpsCounter::update();
 
         // input - begin
         if (cp::Input::is_key_down(GLFW_KEY_ESCAPE, true))
