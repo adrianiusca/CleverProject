@@ -2,7 +2,6 @@ Lighting - Colors
 
 - in texture importer 
     - sa folosim o functie din api in loc de acel for ce tine loc de swap
-    - in loc de FreeImage_FlipVertical ar trebui sa folosim un rotate???
 
 - de lucrat la clasa Texture
     - bits per pixel sa stea in texture data? (are sens)
@@ -25,8 +24,7 @@ Lighting - Colors
 
 - de inlocuit peste tot int, float, unsigned ....
 
-- mouse callbacks de inlocuit cu clasa noastra de Input
-    - sau ce se poate face
+- mouse scroll callback de pus in Input
 
 - de curatat fisierele Window.cpp (legacy)
 
@@ -43,3 +41,6 @@ Lighting - Colors
     - are sens, nu mai avem variabile membre de doua ori
 
 - in Program de redenumit Uniforms in ShaderUniforms
+
+- de adaugat o functie sau un macro 
+    - care sa verifice daca functia apelata la opengl are erori sau nu

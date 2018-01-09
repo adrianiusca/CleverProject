@@ -29,11 +29,11 @@ namespace cp
         
         bind_vbo();
         glBufferData(GL_ARRAY_BUFFER, m_data->get_vertices_size() * sizeof(f32), 
-                                      &m_data->get_vertices().front(), m_drawing_type);
+                                      m_data->get_vertices_ptr(), m_drawing_type);
 
         bind_ibo();
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_data->get_indices_size() * sizeof(u8), 
-                                              &m_data->get_indices().front(), m_drawing_type);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_data->get_indices_size() * sizeof(u16), 
+                                              m_data->get_indices_ptr(), m_drawing_type);
 
         upload_attributes();
 
@@ -49,7 +49,7 @@ namespace cp
         glEnableVertexAttribArray(index);
         glVertexAttribPointer(index++, 3, GL_FLOAT, GL_FALSE, m_vertex_size, static_cast<const void*>(0));
 
-        i32 normal_offset = m_offsets[VertexAttributes::ATTRIBUTE_NORMAL];
+        i32 normal_offset  = m_offsets[VertexAttributes::ATTRIBUTE_NORMAL];
         i32 texture_offset = m_offsets[VertexAttributes::ATTRIBUTE_TEXTURE];
 
         if (normal_offset > 0)
@@ -169,6 +169,15 @@ namespace cp
             return false;
         }
 
+        if (!m_data)
+        {
+            m_data = make_shared<MeshData>();
+        }
+        else
+        {
+            m_data->clear();
+        }
+
         std::stringstream reader(data);
 
         int vertices_size = 0;
@@ -183,10 +192,8 @@ namespace cp
         }
 
         reader >> vertices_size;
-        
-        i32 elements = m_vertex_size / sizeof(f32);
 
-        m_data = make_shared<MeshData>();
+        i32 elements = m_vertex_size / sizeof(f32);
         m_data->reserve_vertices(vertices_size * elements);
 
         for (i32 i = 0; i < vertices_size; i++)
@@ -218,7 +225,7 @@ namespace cp
 
         for (i32 i = 0; i < indices_size; i++)
         {
-            u8 index;
+            u16 index;
 
             reader >> index;
             m_data->add_point(index);
@@ -238,7 +245,7 @@ namespace cp
             return false;
         }
 
-        glGenBuffers(MeshBuffers::BUFFERS_SIZE, &m_buffers.front());
+        glGenBuffers(MeshBuffers::BUFFERS_SIZE, m_buffers.data());
 
         if (!m_buffers[MeshBuffers::BUFFER_VBO] ||
             !m_buffers[MeshBuffers::BUFFER_IBO])

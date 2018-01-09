@@ -62,20 +62,20 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void camera_direction()
 {
     if (firstMouse)
     {
-        lastX = xpos;
-        lastY = ypos;
+        lastX = cp::Input::get_mouse_position().x;
+        lastY = cp::Input::get_mouse_position().y;
         firstMouse = false;
     }
 
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+    float xoffset = cp::Input::get_mouse_position().x - lastX;
+    float yoffset = lastY - cp::Input::get_mouse_position().y;
 
-    lastX = xpos;
-    lastY = ypos;
+    lastX = cp::Input::get_mouse_position().x;
+    lastY = cp::Input::get_mouse_position().y;
 
     camera.ProcessMouseMovement(xoffset, yoffset);
 }
@@ -119,24 +119,22 @@ int main()
     }
 
     glfwSetFramebufferSizeCallback(window.get_ptr(), framebuffer_size_callback);
-    glfwSetCursorPosCallback(window.get_ptr(), mouse_callback);
     glfwSetScrollCallback(window.get_ptr(), scroll_callback);
 
     // tell GLFW to capture our mouse
-    //glfwSetInputMode(window.get_ptr(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(window.get_ptr(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // disable 60 fps limit
     glfwSwapInterval(0);
 
     glViewport(0, 0, 800, 600);
 
-    shared_ptr<cp::Shader> vertex_shader   = make_shared<cp::Shader>(1, make_shared<cp::File>(path("Assets/BasicShader.vs")), GL_VERTEX_SHADER);
-    shared_ptr<cp::Shader> fragment_shader = make_shared<cp::Shader>(2, make_shared<cp::File>(path("Assets/BasicShader.fs")), GL_FRAGMENT_SHADER);
+    auto vertex_shader   = make_shared<cp::Shader>(1, make_shared<cp::File>(path("Assets/BasicShader.vs")), GL_VERTEX_SHADER);
+    auto fragment_shader = make_shared<cp::Shader>(2, make_shared<cp::File>(path("Assets/BasicShader.fs")), GL_FRAGMENT_SHADER);
 
-    shared_ptr<cp::Program> program = make_shared<cp::Program>(3);
+    auto program = make_shared<cp::Program>(3);
     program->add_shaders({ vertex_shader, fragment_shader });
     program->load();
-
 
     cp::TextureImporter container_importer(cp::File(path("Assets/container.jpg")));
     cp::TextureImporter face_importer(cp::File(path("Assets/awesomeface.png")));
@@ -144,21 +142,26 @@ int main()
     container_importer.load();
     face_importer.load();
 
-    shared_ptr<cp::Texture> container_texture = make_shared<cp::Texture>(4, make_shared<cp::File>(path("Assets/container.texture")));
+    auto container_texture = make_shared<cp::Texture>(4, make_shared<cp::File>(path("Assets/container.texture")));
     container_texture->use_mipmaps();
     container_texture->load();
 
-    shared_ptr<cp::Texture> face_texture = make_shared<cp::Texture>(5, make_shared<cp::File>(path("Assets/awesomeface.texture")));
+    auto face_texture = make_shared<cp::Texture>(5, make_shared<cp::File>(path("Assets/awesomeface.texture")));
     face_texture->use_mipmaps();
     face_texture->load();
 
-    //cp::SceneImporter cube_importer(cp::File(path("Assets/container.obj")));
-    //cube_importer.load();
+    cp::SceneImporter cube_importer(cp::File(path("Assets/container.dae")));
+    cube_importer.load();
 
-    shared_ptr<cp::Mesh> cube_mesh = make_shared<cp::Mesh>(6, make_shared<cp::File>(path("Assets/Cube.mesh")));
+    auto cube_mesh = make_shared<cp::Mesh>(6, make_shared<cp::File>(path("Assets/Cube.mesh")));
     cube_mesh->load();
 
+    //glPointSize(5.0f);
+
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+
+    //glCullFace(GL_BACK);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
     // seed the random
@@ -168,18 +171,18 @@ int main()
     program->add_uniform(cp::ShaderUniforms::MODEL_MATRIX, "model");
     program->add_uniform(cp::ShaderUniforms::PROJECTION_MATRIX, "projection");
 
-    //program->add_uniform(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_1, "texture1");
-    //program->add_uniform(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_2, "texture2");
+    program->add_uniform(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_1, "texture1");
+    program->add_uniform(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_2, "texture2");
 
     cp::Time::start();
 
     int fps;
     float t = 0;
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
     while (!window.is_closing())
     {
+        camera_direction();
+
         cp::Time::update();
 
         t += cp::Time::delta_time();
@@ -202,7 +205,12 @@ int main()
             window.close();
         }
 
-        /*if (cp::Input::is_key_down(GLFW_KEY_W))
+        if (cp::Input::is_key_down(GLFW_KEY_L, true))
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        }
+
+        if (cp::Input::is_key_down(GLFW_KEY_W))
         {
             camera.ProcessKeyboard(FORWARD, cp::Time::delta_time());
         }
@@ -220,7 +228,7 @@ int main()
         if (cp::Input::is_key_down(GLFW_KEY_D))
         {
             camera.ProcessKeyboard(RIGHT, cp::Time::delta_time());
-        }*/
+        }
         
         if (cp::Input::is_key_down(GLFW_KEY_SPACE, true))
         {
@@ -232,39 +240,33 @@ int main()
 
         program->use();
 
-        // transformation
-        mat4 view(1.0f);
-        mat4 projection(1.0f);
-
-        view = lookAt(vec3(0.0f, 0.0f, 2.0f), vec3(), vec3(0.0f, 1.0f, 0.0f));
-        projection = perspective(45.0f, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
+        mat4 view = camera.GetViewMatrix();
+        mat4 projection = perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
 
         program->set_mat4(cp::ShaderUniforms::VIEW_MATRIX, view);
-        program->set_mat4(cp::ShaderUniforms::PROJECTION_MATRIX, projection);    
+        program->set_mat4(cp::ShaderUniforms::PROJECTION_MATRIX, projection);
 
-        //program->set_int(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_1, 0);
-        //program->set_int(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_2, 1);
+        program->set_int(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_1, 0);
+        program->set_int(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_2, 1);
 
-        /*cp::Texture::activate(0);
+        cp::Texture::activate(0);
         container_texture->bind();
 
         cp::Texture::activate(1);
-        face_texture->bind();*/
-
-        program->set_mat4(cp::ShaderUniforms::MODEL_MATRIX, glm::mat4(1.0f));
+        face_texture->bind();
 
         cube_mesh->bind_vao();
-        cube_mesh->draw();
-
-        /*for (u32 i = 0; i < cubePositions.size(); i++)
+    
+        for (u32 i = 0; i < cubePositions.size(); i++)
         {
             mat4 model;
             model = translate(model, cubePositions[i]);
+            model = scale(model, vec3(0.5f));
             
             program->set_mat4(cp::ShaderUniforms::MODEL_MATRIX, model);
 
             cube_mesh->draw();
-        }*/
+        }
 
         window.update();
     }

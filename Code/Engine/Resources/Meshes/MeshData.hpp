@@ -13,14 +13,14 @@ namespace cp
         void add_vec2(const vec2& vec);
         void add_vec3(const vec3& vec);
 
-        void add_point(u8 index);
-        void add_line(u8 index_one, u8 index_two);
-        void add_triangle(u8 index_one, u8 index_two, u8 index_three);
+        void add_point(u16 index);
+        void add_line(u16 index_one, u16 index_two);
+        void add_triangle(u16 index_one, u16 index_two, u16 index_three);
 
-        const vector<u8>& get_indices() const;
+        const vector<u16>& get_indices() const;
         const vector<f32>& get_vertices() const;
 
-        u8* get_indices_ptr();
+        u16* get_indices_ptr();
         f32* get_vertices_ptr();
     
         u32 get_vertices_size() const;
@@ -33,7 +33,7 @@ namespace cp
         bool is_empty() const;
     
     private:
-        vector<u8> m_indices;
+        vector<u16> m_indices;
         vector<f32> m_vertices;
     };
 }

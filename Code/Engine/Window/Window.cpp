@@ -27,7 +27,7 @@ namespace cp
             return false;
         }
 
-        if (is_resizable)
+        if (!is_resizable)
         {
             WindowApi::enable_fixed_size();
         }

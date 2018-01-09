@@ -28,25 +28,25 @@ namespace cp
         m_vertices.emplace_back(vec.z);
     }
 
-    void MeshData::add_point(u8 index)
+    void MeshData::add_point(u16 index)
     {
         m_indices.emplace_back(index);
     }
 
-    void MeshData::add_line(u8 index_one, u8 index_two)
+    void MeshData::add_line(u16 index_one, u16 index_two)
     {
         add_point(index_one);
         add_point(index_two);
     }
 
-    void MeshData::add_triangle(u8 index_one, u8 index_two, u8 index_three)
+    void MeshData::add_triangle(u16 index_one, u16 index_two, u16 index_three)
     {
         add_point(index_one);
         add_point(index_two);
         add_point(index_three);
     }
 
-    const vector<u8>& MeshData::get_indices() const
+    const vector<u16>& MeshData::get_indices() const
     {
         return m_indices;
     }
@@ -88,7 +88,7 @@ namespace cp
         return m_indices.size();
     }
 
-    u8* MeshData::get_indices_ptr()
+    u16* MeshData::get_indices_ptr()
     {
         return m_indices.data();
     }
