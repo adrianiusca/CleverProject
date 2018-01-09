@@ -41,3 +41,5 @@ Lighting - Colors
 
 - Importerele returneaza o resursa de tipul respectiv ??? 
     - are sens, nu mai avem variabile membre de doua ori
+
+- in Program de redenumit Uniforms in ShaderUniforms

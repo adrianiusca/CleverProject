@@ -8,7 +8,7 @@ namespace cp
     {
         KEEP_DATA = Util::to_bit(0),
         
-        //USE_NORMALS  = Util::to_bit(1),
-		//USE_TEXTURES = Util::to_bit(2),
+        USE_NORMALS  = Util::to_bit(1),
+		USE_TEXTURES = Util::to_bit(2),
     };
 }

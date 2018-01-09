@@ -6,6 +6,7 @@
 #include "Engine/Resources/Shaders/Shader.hpp"
 #include "Engine/Resources/Shaders/Program.hpp"
 #include "Engine/Resources/Textures/Texture.hpp"
+#include "Engine/Resources/Meshes/Mesh.hpp"
 
 #include "Engine/Renderer/RendererApi.hpp"
 
@@ -21,7 +22,7 @@ const unsigned int SCR_WIDTH  = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 // camera
-Camera camera(vec3(0.0f, 2.0f, 5.0f));
+Camera camera(vec3(0.0f, 0.0f, 5.0f));
 
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
@@ -129,50 +130,6 @@ int main()
 
     glViewport(0, 0, 800, 600);
 
-    float vertices[] = 
-    {
-        1.000000, 1.000000, -1.000000, 0.000000, 0.000000,
-        -1.000000, -1.000000, -1.000000, 1.000000, 1.000000,
-        -1.000000, 1.000000, -1.000000, 0.000000, 1.000000,
-        -1.000000, 1.000000, 1.000000, 1.000000, 0.000000,
-        0.999999, -1.000001, 1.000000, 0.000000, 1.000000,
-        1.000000, 1.000000, 1.000000, 0.000000, 0.000000,
-        1.000000, 1.000000, 1.000000, 1.000000, 0.000000,
-        1.000000, -1.000000, -1.000000, 0.000000, 1.000000,
-        1.000000, 1.000000, -1.000000, 0.000000, 0.000000,
-        0.999999, -1.000001, 1.000000, 1.000000, 0.000000,
-        -1.000000, -1.000000, -1.000000, 0.000000, 1.000000,
-        1.000000, -1.000000, -1.000000, 0.000000, 0.000000,
-        -1.000000, -1.000000, -1.000000, 0.000000, 0.000000,
-        -1.000000, 1.000000, 1.000000, 1.000000, 1.000000,
-        -1.000000, 1.000000, -1.000000, 0.000000, 1.000000,
-        1.000000, 1.000000, -1.000000, 1.000000, 0.000000,
-        -1.000000, 1.000000, 1.000000, 0.000000, 1.000000,
-        1.000000, 1.000000, 1.000000, 0.000000, 0.000000,
-        1.000000, -1.000000, -1.000000, 1.000000, 0.000000,
-        -1.000000, -1.000000, 1.000000, 1.000000, 1.000000,
-        0.999999, -1.000001, 1.000000, 1.000000, 1.000000,
-        -1.000000, -1.000000, 1.000000, 1.000000, 1.000000,
-        -1.000000, -1.000000, 1.000000, 1.000000, 0.000000,
-        -1.000000, 1.000000, -1.000000, 1.000000, 1.000000,
-    };
-
-    unsigned int indices[] = 
-    { 
-        0, 1, 2,
-        3, 4, 5,
-        6, 7, 8,
-        9, 10, 11,
-        12, 13, 14,
-        15, 16, 17,
-        0, 18, 1,
-        3, 19, 4,
-        6, 20, 7,
-        9, 21, 10,
-        12, 22, 13,
-        15, 23, 16,
-    };  
-
     shared_ptr<cp::Shader> vertex_shader   = make_shared<cp::Shader>(1, make_shared<cp::File>(path("Assets/BasicShader.vs")), GL_VERTEX_SHADER);
     shared_ptr<cp::Shader> fragment_shader = make_shared<cp::Shader>(2, make_shared<cp::File>(path("Assets/BasicShader.fs")), GL_FRAGMENT_SHADER);
 
@@ -195,32 +152,11 @@ int main()
     face_texture->use_mipmaps();
     face_texture->load();
 
-    cp::SceneImporter cube_importer(cp::File(path("Assets/container.dae")));
-    cube_importer.load();
+    //cp::SceneImporter cube_importer(cp::File(path("Assets/container.obj")));
+    //cube_importer.load();
 
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
-
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW); 
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    /*glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3* sizeof(float)));
-    glEnableVertexAttribArray(1);*/
-
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
+    shared_ptr<cp::Mesh> cube_mesh = make_shared<cp::Mesh>(6, make_shared<cp::File>(path("Assets/Cube.mesh")));
+    cube_mesh->load();
 
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -232,13 +168,15 @@ int main()
     program->add_uniform(cp::ShaderUniforms::MODEL_MATRIX, "model");
     program->add_uniform(cp::ShaderUniforms::PROJECTION_MATRIX, "projection");
 
-    program->add_uniform(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_1, "texture1");
-    program->add_uniform(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_2, "texture2");
+    //program->add_uniform(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_1, "texture1");
+    //program->add_uniform(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_2, "texture2");
 
     cp::Time::start();
 
     int fps;
     float t = 0;
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     while (!window.is_closing())
     {
@@ -264,7 +202,7 @@ int main()
             window.close();
         }
 
-        if (cp::Input::is_key_down(GLFW_KEY_W))
+        /*if (cp::Input::is_key_down(GLFW_KEY_W))
         {
             camera.ProcessKeyboard(FORWARD, cp::Time::delta_time());
         }
@@ -282,7 +220,7 @@ int main()
         if (cp::Input::is_key_down(GLFW_KEY_D))
         {
             camera.ProcessKeyboard(RIGHT, cp::Time::delta_time());
-        }
+        }*/
         
         if (cp::Input::is_key_down(GLFW_KEY_SPACE, true))
         {
@@ -298,39 +236,38 @@ int main()
         mat4 view(1.0f);
         mat4 projection(1.0f);
 
-        view = camera.GetViewMatrix();
-        projection = perspective(radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
+        view = lookAt(vec3(0.0f, 0.0f, 2.0f), vec3(), vec3(0.0f, 1.0f, 0.0f));
+        projection = perspective(45.0f, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
 
         program->set_mat4(cp::ShaderUniforms::VIEW_MATRIX, view);
         program->set_mat4(cp::ShaderUniforms::PROJECTION_MATRIX, projection);    
 
-        program->set_int(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_1, 0);
-        program->set_int(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_2, 1);
+        //program->set_int(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_1, 0);
+        //program->set_int(cp::ShaderUniforms::MATERIAL_DIFFUSE_TEXTURE_2, 1);
 
-        cp::Texture::activate(0);
+        /*cp::Texture::activate(0);
         container_texture->bind();
 
         cp::Texture::activate(1);
-        face_texture->bind();
+        face_texture->bind();*/
 
-        glBindVertexArray(VAO);
+        program->set_mat4(cp::ShaderUniforms::MODEL_MATRIX, glm::mat4(1.0f));
 
-        for (unsigned int i = 0; i < cubePositions.size(); i++)
+        cube_mesh->bind_vao();
+        cube_mesh->draw();
+
+        /*for (u32 i = 0; i < cubePositions.size(); i++)
         {
             mat4 model;
             model = translate(model, cubePositions[i]);
             
             program->set_mat4(cp::ShaderUniforms::MODEL_MATRIX, model);
 
-            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, static_cast<const void*>(0));
-        }
+            cube_mesh->draw();
+        }*/
 
         window.update();
     }
-
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
 
     window.release();
 

@@ -20,19 +20,20 @@ namespace cp
             return false;
         }
 
-        if (!m_data->is_empty())
+        if (m_data->is_empty())
         {
             return false;
         }
 
         bind_vao();
+        
         bind_vbo();
-        glBufferData(GL_ARRAY_BUFFER, m_data->get_vertices_size() * sizeof(float), 
-                                      m_data->get_vertices_ptr(), m_drawing_type);
+        glBufferData(GL_ARRAY_BUFFER, m_data->get_vertices_size() * sizeof(f32), 
+                                      &m_data->get_vertices().front(), m_drawing_type);
 
         bind_ibo();
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_data->get_indices_size() * sizeof(unsigned short), 
-                                              m_data->get_indices_ptr(), m_drawing_type);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_data->get_indices_size() * sizeof(u8), 
+                                              &m_data->get_indices().front(), m_drawing_type);
 
         upload_attributes();
 
@@ -43,7 +44,7 @@ namespace cp
 
     void Mesh::upload_attributes() const
     {
-        int index = 0;
+        i32 index = 0;
 
         glEnableVertexAttribArray(index);
         glVertexAttribPointer(index++, 3, GL_FLOAT, GL_FALSE, m_vertex_size, static_cast<const void*>(0));
@@ -171,14 +172,14 @@ namespace cp
         std::stringstream reader(data);
 
         int vertices_size = 0;
-        int indices_size = 0;
+        int indices_size  = 0;
 
         reader >> m_drawing_primitive;
         reader >> m_vertex_size;
 
         for (i32 i = 0; i < VertexAttributes::ATTRIBUTES_SIZE; i++)
         {
-            reader >> m_offsets.at(i);
+            reader >> m_offsets[i];
         }
 
         reader >> vertices_size;

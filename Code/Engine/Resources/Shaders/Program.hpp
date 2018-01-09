@@ -8,7 +8,7 @@
 namespace cp
 {
     typedef map<ShaderUniforms, i32> Uniforms;
-    typedef map<VertexAttributes, i32> Attributes;
+    typedef map<VertexAttributes, i32> ShaderAttributes;
 
     typedef vector<shared_ptr<Shader>> Shaders;
 
@@ -36,7 +36,7 @@ namespace cp
         void set_int(ShaderUniforms uniform, int value) const;
 
         const Uniforms& get_uniforms() const;
-        const Attributes& get_attributes() const;
+        const ShaderAttributes& get_attributes() const;
 
         const Shaders& get_shaders() const;
 
@@ -64,7 +64,7 @@ namespace cp
         Shaders m_shaders;
 
         Uniforms m_uniforms;
-        Attributes m_attributes;
+        ShaderAttributes m_attributes;
 
         int m_program_id;
     };

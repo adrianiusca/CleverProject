@@ -1,10 +1,12 @@
 #include "MeshImporter.hpp"
+#include "Engine/Resources/Meshes/MeshFlags.hpp"
 
 namespace cp
 {
-    MeshImporter::MeshImporter()
+    MeshImporter::MeshImporter(const Flag& flag)
         : m_drawing_primitive(0)
         , m_vertex_size(sizeof(vec3))
+        , m_flag(flag)
     {
     }
 
@@ -46,16 +48,22 @@ namespace cp
             const aiVector3D& position = mesh->mVertices[v];
             writer << position.x << " " << position.y << " " << position.z;
 
-            if (mesh->HasNormals())
+            if (m_flag.contains(Flag(MeshFlags::USE_NORMALS)))
             {
-                const aiVector3D& normal = mesh->mNormals[v];
-                writer << " " << normal.x << " " << normal.y << " " << normal.z;
+                if (mesh->HasNormals())
+                {
+                    const aiVector3D& normal = mesh->mNormals[v];
+                    writer << " " << normal.x << " " << normal.y << " " << normal.z;
+                }
             }
 
-            if (mesh->HasTextureCoords(0))
+            if (m_flag.contains(Flag(MeshFlags::USE_TEXTURES)))
             {
-                const aiVector3D& texture = mesh->mTextureCoords[0][v];
-                writer << " " << texture.x << " " << texture.y;
+                if (mesh->HasTextureCoords(0))
+                {
+                    const aiVector3D& texture = mesh->mTextureCoords[0][v];
+                    writer << " " << texture.x << " " << texture.y;
+                }
             }
 
             writer << endl;
@@ -89,16 +97,22 @@ namespace cp
     {
         m_offsets.fill(0);
 
-        if (mesh->HasNormals())
+        if (m_flag.contains(Flag(MeshFlags::USE_NORMALS)))
         {
-            m_vertex_size += sizeof(vec3);
-            m_offsets[VertexAttributes::ATTRIBUTE_NORMAL] = sizeof(vec3) / sizeof(f32);
+            if (mesh->HasNormals())
+            {
+                m_offsets[VertexAttributes::ATTRIBUTE_NORMAL] = m_vertex_size;
+                m_vertex_size += sizeof(vec3);
+            }
         }
 
-        if (mesh->HasTextureCoords(0))
+        if (m_flag.contains(Flag(MeshFlags::USE_TEXTURES)))
         {
-            m_vertex_size += sizeof(vec2);
-            m_offsets[VertexAttributes::ATTRIBUTE_TEXTURE] = sizeof(vec2) / sizeof(f32);
+            if (mesh->HasTextureCoords(0))
+            {
+                m_offsets[VertexAttributes::ATTRIBUTE_TEXTURE] = m_vertex_size;
+                m_vertex_size += sizeof(vec2);
+            }
         }
     }
 

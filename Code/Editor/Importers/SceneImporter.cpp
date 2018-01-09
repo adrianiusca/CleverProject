@@ -1,5 +1,6 @@
 #include "SceneImporter.hpp"
 #include "MeshImporter.hpp"
+#include "Engine/Resources/Meshes/MeshFlags.hpp"
 
 namespace cp
 {
@@ -12,7 +13,8 @@ namespace cp
     {
         Assimp::Importer importer;
 
-        const aiScene* scene = importer.ReadFile(m_file.get_path(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
+        const aiScene* scene = importer.ReadFile(m_file.get_path(), aiProcess_Triangulate | 
+                                                                    aiProcess_JoinIdenticalVertices);
 
         if (!scene)
         {
@@ -30,8 +32,8 @@ namespace cp
                 mesh_file.replace_filename(mesh->mName.C_Str());
                 mesh_file.replace_extension(".mesh");
 
-               MeshImporter mesh_importer;
-               mesh_importer.write(mesh_file, mesh);
+                MeshImporter mesh_importer = MeshImporter(Flag(MeshFlags::USE_TEXTURES));
+                mesh_importer.write(mesh_file, mesh);
             }
         }
 

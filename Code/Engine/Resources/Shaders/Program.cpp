@@ -111,7 +111,7 @@ namespace cp
         return m_uniforms;
     }
 
-    const Attributes& Program::get_attributes() const
+    const ShaderAttributes& Program::get_attributes() const
     {
         return m_attributes;
     }
