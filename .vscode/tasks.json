@@ -29,6 +29,8 @@
                 "Code/Engine/Common/Input.cpp",
                 "Code/Engine/Common/File/File.cpp",
                 "Code/Engine/Common/Random/Random.cpp",
+                "Code/Engine/Nodes/Node.cpp",
+                "Code/Engine/Nodes/Transform/Transform.cpp",
                 "Code/Engine/Resources/Resource.cpp",
                 "Code/Engine/Resources/DynamicResource.cpp",
                 "Code/Engine/Resources/Shaders/Shader.cpp",
